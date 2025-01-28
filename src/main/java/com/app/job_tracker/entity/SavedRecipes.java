@@ -18,13 +18,19 @@ public class SavedRecipes {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(nullable = false)
     private String name;
 
     @ElementCollection
     @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
-    private List<String> ingredients;
+    private List<RecipeIngredient> ingredients;
+
+    @Column(nullable = false)
     private String instructions;
+
     private int calories;
+
+    @Column(nullable = false)
     private int servings;
 
     @ManyToOne
