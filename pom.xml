@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.app</groupId>
-	<artifactId>job_tracker</artifactId>
+	<artifactId>recipe_generator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>job_tracker</name>
-	<description>Job tracking application</description>
+	<name>recipe_generator</name>
+	<description>AI recipe generator application</description>
 	<url/>
 	<licenses>
 		<license/>
