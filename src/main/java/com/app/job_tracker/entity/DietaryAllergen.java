@@ -6,6 +6,18 @@ import org.springframework.boot.autoconfigure.web.WebProperties;
 @Entity
 public class DietaryAllergen {
 
+    public Integer getId() {
+        return id;
+    }
+
+    public DietaryPreferences getDietaryPreferences() {
+        return dietaryPreferences;
+    }
+
+    public String getAllergenName() {
+        return allergen;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

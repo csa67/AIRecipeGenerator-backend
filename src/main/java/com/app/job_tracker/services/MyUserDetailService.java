@@ -1,4 +1,4 @@
-package com.app.job_tracker.security;
+package com.app.job_tracker.services;
 
 import com.app.job_tracker.entity.User;
 import com.app.job_tracker.repository.UserRepo;
