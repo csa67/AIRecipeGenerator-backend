@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,5 +49,21 @@ public class RecipeService {
         recipeIngredientRepo.saveAll(savedIngredients);
 
         return new RecipeResponse("Recipe saved successfully!", true);
+    }
+
+    // ✅ Fetch all saved recipes
+    public List<SavedRecipes> getAllSavedRecipes() {
+        return recipesRepo.findAll();
+    }
+
+    public RecipeResponse deleteRecipe(UUID recipeId) {
+        Optional<SavedRecipes> existingRecipe = recipesRepo.findById(recipeId);
+
+        if (existingRecipe.isPresent()) {
+            recipesRepo.deleteById(recipeId);
+            return new RecipeResponse("Recipe deleted successfully!", true);
+        } else {
+            return new RecipeResponse("Recipe not found!", false);
+        }
     }
 }

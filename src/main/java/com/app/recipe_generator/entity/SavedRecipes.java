@@ -21,8 +21,7 @@ public class SavedRecipes {
     @Column(nullable = false)
     private String name;
 
-    @ElementCollection
-    @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> ingredients;
 
     @Column(nullable = false)
