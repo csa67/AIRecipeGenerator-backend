@@ -23,7 +23,7 @@ public class JWTUtil {
                 .withSubject("User Details")
                 .withClaim("username", username)
                 .withIssuedAt(new Date())
-                .withIssuer("JOB TRACKER APPLICATION")
+                .withIssuer("recipe_generator_app")
                 .sign(Algorithm.HMAC256(secret));
 
     }
@@ -32,7 +32,7 @@ public class JWTUtil {
             JWTVerificationException{
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
                 .withSubject("User Details")
-                .withIssuer("JOB TRACKER APPLICATION")
+                .withIssuer("recipe_generator_app")
                 .build();
 
         DecodedJWT jwt = verifier.verify(token);

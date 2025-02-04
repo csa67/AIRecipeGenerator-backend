@@ -4,15 +4,16 @@ import com.app.recipe_generator.entity.User;
 import com.app.recipe_generator.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Optional;
 
-@Component
+@Service
 public class MyUserDetailService implements UserDetailsService {
 
     @Autowired private UserRepo userRepo;
@@ -33,4 +34,14 @@ public class MyUserDetailService implements UserDetailsService {
                         )
         );
     }
+
+    public User getUserDetails() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if(username == null) throw new RuntimeException("Invalid user");
+
+        return userRepo.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Session has expired. Please log in again."));
+    }
+
 }

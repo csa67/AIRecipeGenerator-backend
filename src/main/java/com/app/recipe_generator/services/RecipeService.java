@@ -3,13 +3,16 @@ package com.app.recipe_generator.services;
 import com.app.recipe_generator.entity.Ingredient;
 import com.app.recipe_generator.entity.RecipeIngredient;
 import com.app.recipe_generator.entity.SavedRecipes;
+import com.app.recipe_generator.entity.User;
 import com.app.recipe_generator.model.RecipeResponse;
 import com.app.recipe_generator.repository.IngredientRepo;
 import com.app.recipe_generator.repository.RecipeIngredientRepo;
 import com.app.recipe_generator.repository.SavedRecipesRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,29 +30,45 @@ public class RecipeService {
     @Autowired
     private RecipeIngredientRepo recipeIngredientRepo;
 
-    public RecipeResponse saveRecipe(SavedRecipes recipe){
-        Optional<SavedRecipes> existingRecipe = recipesRepo.findByName(recipe.getName());
+    @Autowired
+    private MyUserDetailService userDetailService;
 
-        if (existingRecipe.isPresent()) {
-            return new RecipeResponse("Recipe already saved!", false);
+    @Transactional
+    public RecipeResponse saveRecipe(SavedRecipes recipe) {
+        try {
+            Optional<SavedRecipes> existingRecipe = recipesRepo.findByName(recipe.getName());
+
+            if (existingRecipe.isPresent()) {
+                return new RecipeResponse("Recipe already saved!", false);
+            }
+
+            User user = userDetailService.getUserDetails();
+            recipe.setUser(user);
+
+            List<RecipeIngredient> ingredients = new ArrayList<>();
+            SavedRecipes savedRecipe = recipesRepo.save(recipe);
+
+            for (RecipeIngredient ri : recipe.getIngredients()) {
+                Ingredient ingredient = ingredientService.saveOrFindIngredient(ri.getIngredient().getName());
+                ri.setRecipe(savedRecipe);
+                ri.setIngredient(ingredient);
+                ingredients.add(ri);
+            }
+
+            recipeIngredientRepo.saveAll(ingredients);
+            savedRecipe.setIngredients(ingredients);
+            recipesRepo.save(savedRecipe);
+
+            return new RecipeResponse("Recipe saved successfully!", true);
+
+        } catch (Exception e) {
+            // ❌ Log the error and roll back transaction
+            System.err.println("Error while saving recipe: " + e.getMessage());
+            throw new RuntimeException("Failed to save recipe. Please try again.");
         }
-
-        // Save Recipe
-        SavedRecipes savedRecipe = recipesRepo.save(recipe);
-
-        List<RecipeIngredient> savedIngredients = recipe.getIngredients().stream().map(ri -> {
-            // Check if the ingredient already exists, reuse it
-            Ingredient ingredient = ingredientService.saveOrFindIngredient(ri.getIngredient().getName());
-
-            ri.setRecipe(savedRecipe);
-            ri.setIngredient(ingredient);
-            return ri;
-        }).toList();
-
-        recipeIngredientRepo.saveAll(savedIngredients);
-
-        return new RecipeResponse("Recipe saved successfully!", true);
     }
+
+
 
     // ✅ Fetch all saved recipes
     public List<SavedRecipes> getAllSavedRecipes() {

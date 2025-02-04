@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/user/**").hasRole("USER")
+                        .requestMatchers("/api/recipes/**").hasRole("USER")
                         .anyRequest().authenticated())
                 .userDetailsService(userDetailService)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
