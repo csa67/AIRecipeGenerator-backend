@@ -27,7 +27,7 @@ public class SavedRecipes {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RecipeIngredient> ingredients = new ArrayList<>();
 
     @NotBlank(message = "Instructions cannot be empty")
