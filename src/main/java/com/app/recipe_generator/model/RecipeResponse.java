@@ -16,4 +16,28 @@ public class RecipeResponse {
         this.msg = msg;
         this.isSaved = isSaved;
     }
+
+    public RecipeResponse() {
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public Boolean getSaved() {
+        return isSaved;
+    }
+
+    public void setSaved(Boolean saved) {
+        isSaved = saved;
+    }
+
+    @Override
+    public String toString() {
+        return this.msg + this.isSaved;
+    }
 }
