@@ -16,16 +16,19 @@ This repository contains the **Spring Boot backend** for the Recipe Generator ap
 - **Bycrypt Password Encoder**
 
 ## API Endpoints
-POST   /api/auth/register
-POST   /api/auth/login
 
-GET    /api/user/info
+```http
+POST   /api/auth/register                  # Register a new user and return JWT token
+POST   /api/auth/login                     # Authenticate user and return JWT token
 
-POST   /api/dietary-preferences
-GET    /api/dietary-preferences/{userId}
-PUT    /api/dietary-preferences/{id}
-DELETE /api/dietary-preferences/{userId}
+GET    /api/user/info                      # Get details of the authenticated user
 
-POST   /api/recipes/saveRecipe
-GET    /api/recipes/savedRecipes
-DELETE /api/recipes/recipe/{id}
+POST   /api/dietary-preferences            # Add dietary preferences for a user
+GET    /api/dietary-preferences/{userId}   # Get dietary preferences of a user by user ID
+PUT    /api/dietary-preferences/{id}       # Update dietary preferences by ID
+DELETE /api/dietary-preferences/{userId}   # Delete dietary preferences of a user by user ID
+
+POST   /api/recipes/saveRecipe             # Save a new recipe with ingredients
+GET    /api/recipes/savedRecipes           # Get all saved recipes
+DELETE /api/recipes/recipe/{id}            # Delete a saved recipe by recipe ID
+
