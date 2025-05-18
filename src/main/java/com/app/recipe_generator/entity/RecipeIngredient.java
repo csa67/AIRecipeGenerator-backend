@@ -20,12 +20,18 @@ public class RecipeIngredient {
     @JoinColumn(name = "recipe_id",nullable = false)
     private SavedRecipes recipe;
 
-    @ManyToOne
-    @JoinColumn(name="ingredient_id",nullable = false)
-    private Ingredient ingredient;
+    private String name;
 
     private Double quantity;
     private String unit;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public SavedRecipes getRecipe() {
         return recipe;
@@ -35,11 +41,27 @@ public class RecipeIngredient {
         this.recipe = recipe;
     }
 
-    public Ingredient getIngredient() {
-        return ingredient;
+    public String getName() {
+        return name;
     }
 
-    public void setIngredient(Ingredient ingredient) {
-        this.ingredient = ingredient;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

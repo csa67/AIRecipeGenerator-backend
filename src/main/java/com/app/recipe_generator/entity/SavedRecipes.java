@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,30 +18,14 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class SavedRecipes {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "Recipe name cannot be empty.")
-    @Column(nullable = false, unique = true)
-    private String name;
-
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<RecipeIngredient> ingredients = new ArrayList<>();
-
-    @NotBlank(message = "Instructions cannot be empty")
+    @NotBlank(message = "Recipe title cannot be empty.")
     @Column(nullable = false)
-    private String instructions;
-
-    private int calories;
-
-    @Min(value = 1, message = "Servings must be at least 1")
-    @Column(nullable = false)
-    private int servings;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private String title;
 
     public UUID getId() {
         return id;
@@ -52,35 +35,27 @@ public class SavedRecipes {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public List<RecipeIngredient> getIngredients() {
-        return ingredients;
+    public String getDescription() {
+        return description;
     }
 
-    public void setIngredients(List<RecipeIngredient> ingredients) {
-        this.ingredients = ingredients;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
-    }
-
-    public int getCalories() {
+    public double getCalories() {
         return calories;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(double calories) {
         this.calories = calories;
     }
 
@@ -92,6 +67,30 @@ public class SavedRecipes {
         this.servings = servings;
     }
 
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+
+    public List<RecipeIngredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<RecipeIngredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
     public User getUser() {
         return user;
     }
@@ -99,4 +98,25 @@ public class SavedRecipes {
     public void setUser(User user) {
         this.user = user;
     }
+
+    private String description;
+
+    private double calories;
+
+    @Min(value = 1, message = "Servings must be at least 1")
+    @Column(nullable = false)
+    private int servings;
+
+    private String time; // e.g., "30 minutes"
+
+    @Lob
+    @Column(nullable = false)
+    private String instructions;
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<RecipeIngredient> ingredients = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

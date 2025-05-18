@@ -17,9 +17,6 @@ public class RecipeResponse {
         this.isSaved = isSaved;
     }
 
-    public RecipeResponse() {
-    }
-
     public String getMsg() {
         return msg;
     }

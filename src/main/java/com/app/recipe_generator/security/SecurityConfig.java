@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/user/**").hasRole("USER")
                         .requestMatchers("/api/recipes/**").hasRole("USER")
+                        .requestMatchers("/api/filters/**").hasRole("USER")
                         .anyRequest().authenticated())
                 .userDetailsService(userDetailService)
                 .exceptionHandling(exceptionHandling -> exceptionHandling

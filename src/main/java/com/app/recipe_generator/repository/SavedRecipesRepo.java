@@ -9,6 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface SavedRecipesRepo extends JpaRepository<SavedRecipes, UUID> {
-    Optional<SavedRecipes> findByName(String name);
+    Optional<SavedRecipes> findByTitle(String title);
 }
 
